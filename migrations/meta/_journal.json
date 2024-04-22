@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1713648179961,
+      "tag": "0000_exotic_blonde_phantom",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1713649446788,
+      "tag": "0001_messy_lifeguard",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1713651085879,
+      "tag": "0002_big_thunderbolts",
+      "breakpoints": true
+    }
+  ]
+}
