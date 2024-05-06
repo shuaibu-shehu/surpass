@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
+import CustomButton from '../custom-button';
 
 const routes = [
   { title: 'Features', href: '#features' },
@@ -89,7 +90,7 @@ const Header = () => {
           dark:text-white
         "
         >
-          cypress.
+          surpass.
         </span>
       </Link>
       <NavigationMenu className="hidden md:block">
@@ -229,7 +230,7 @@ const Header = () => {
       >
         <Link href={'/login'}>
           <Button
-            // variant="btn-secondary"
+            variant={"secondary"}
             className=" p-1 hidden sm:block"
           >
             Login
@@ -237,7 +238,7 @@ const Header = () => {
         </Link>
         <Link href="/signup">
           <Button
-            // variant="btn-primary"
+            variant="secondary"
             className="whitespace-nowrap"
           >
             Sign Up

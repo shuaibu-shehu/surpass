@@ -41,7 +41,9 @@ function Home() {
             title="Collaborate with your team seamlessly and Flawless experience"
           />
         </div>
-        <CustomButton text="Get Surpass" showIcon={false}/>
+        <CustomButton showIcon={false} >
+          Get Surpass
+        </CustomButton >
         <div className="relative p-4 sm:p-6 w-full flex justify-center items-center">
           <Image src={appBanner} alt="banner" height={90} width={1000} />
           <div

@@ -10,10 +10,15 @@ export async function actionLoginUser({
   password,
 }: z.infer<typeof FormSchema>) {
   const supabase = createRouteHandlerClient({ cookies });
+console.log('something');
+
+
   const response = await supabase.auth.signInWithPassword({
     email,
     password,
   });
+
+      
   return response;
 }
 
@@ -35,5 +40,8 @@ export async function actionSignUpUser({
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
     },
   });
+
+ console.log('response', response);
+  
   return response;
 }

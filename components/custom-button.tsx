@@ -1,13 +1,15 @@
 import React from 'react'
 import { Button } from './ui/button'
 import { MoveRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface CustomButtonProps {
-  text: string
-  showIcon: boolean
+  showIcon?: boolean
+  children: React.ReactNode
+  className?: string
 }
 
-function CustomButton({ text, showIcon}: CustomButtonProps) {
+function CustomButton({showIcon, children, className : props}: CustomButtonProps) {
   return (
     <div
     className=' 
@@ -27,16 +29,16 @@ function CustomButton({ text, showIcon}: CustomButtonProps) {
     '
     >
         <Button variant={"secondary"}
-        className='
+        className={cn(`
         rounded-xl
         bg-gradient-to-r
         from-[#000000]
         to-[#656565]
         group-hover:from-[#000000]
         group-hover:to-[#2a2626]
-        '>
+        `,props ? props : '')}>
            { showIcon && <MoveRight className='mx-[13px]'/>}
-          <span>{text}</span>
+          {children}
         </Button>
 
     </div>

@@ -38,6 +38,7 @@ const LoginPage = () => {
     formData
   ) => {
     const { error } = await actionLoginUser(formData);
+    
     if (error) {
       form.reset();
       setSubmitError(error.message);
@@ -117,7 +118,6 @@ const LoginPage = () => {
         />
         {submitError && <FormMessage>{submitError}</FormMessage>}
         <Button
-        
           type="submit"
           className="w-full p-4 hover:bg-primary-blue-600"
           size="lg"
