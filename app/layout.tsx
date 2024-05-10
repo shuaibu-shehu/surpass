@@ -6,6 +6,7 @@ import { DM_Sans } from "next/font/google";
 import AppStateProvider from "@/lib/providers/state-provider";
 import { SupabaseUserProvider } from "@/lib/providers/supabase-user-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { SocketProvider } from "@/lib/providers/socket-provider";
 
 const inter = DM_Sans({ subsets: ["latin"] });
 
@@ -21,23 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className= {`${inter.className} dark:bg-black`}>
-        <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        >
+      <body className={`${inter.className} dark:bg-black`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <AppStateProvider>
-          <SupabaseUserProvider>
-
-          {children}
-          <Toaster/>
-          </SupabaseUserProvider>
-
-
+            <SupabaseUserProvider>
+              <SocketProvider>
+                {children}
+                <Toaster />
+              </SocketProvider>
+            </SupabaseUserProvider>
           </AppStateProvider>
         </ThemeProvider>
-        </body>
+      </body>
     </html>
   );
 }

@@ -20,7 +20,7 @@ import Loader from '../global/Loader';
 import { createWorkspace } from '@/lib/supabase/queries';
 import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
-// // import { useAppState } from '@/lib/providers/state-provider';
+import { useAppState } from '@/lib/providers/state-provider';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { CreateWorkspaceFormSchema } from '@/lib/types';
 import { z } from 'zod';
@@ -36,7 +36,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
 }) => {
   const { toast } = useToast();
   const router = useRouter();
-  // const { dispatch } = useAppState();
+  const { dispatch } = useAppState();
   const [selectedEmoji, setSelectedEmoji] = useState('💼');
   const supabase = createClientComponentClient();
   const {
@@ -94,10 +94,10 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
       if (createError) {
         throw new Error();
       }
-      // dispatch({
-      //   type: 'ADD_WORKSPACE',
-      //   payload: { ...newWorkspace, folders: [] },
-      // });
+      dispatch({
+        type: 'ADD_WORKSPACE',
+        payload: { ...newWorkspace, folders: [] },
+      });
 
       toast({
         title: 'Workspace Created',
@@ -182,7 +182,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 type="file"
                 accept="image/*"
                 placeholder="Workspace Name"
-                // disabled={isLoading || subscription?.status !== 'active'}
+                disabled={isLoading || subscription?.status !== 'active'}
                 {...register('logo', {
                   required: false,
                 })}

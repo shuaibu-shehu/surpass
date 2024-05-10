@@ -274,7 +274,6 @@ const Dropdown: React.FC<DropdownProps> = ({
       inTrash: null,
       title: 'Untitled',
       iconId: '📄',
-      logo: '',
       id: v4(),
       bannerUrl: '',
       workspaceId,
@@ -345,7 +344,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             />
           </div>
           <div className={hoverStyles}>
-            <TooltipComponent message="Delete Folder">
+            <TooltipComponent message={listType =='folder'? 'Delete Folder' : 'Delete File'}>
               <Trash
                 onClick={moveToTrash}
                 size={15}

@@ -26,6 +26,9 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   const supabase = createServerComponentClient({ cookies });
   //user
+
+
+  
   const {
     data: { user },
   } = await supabase.auth.getUser();

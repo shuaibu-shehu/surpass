@@ -296,3 +296,74 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       return { data: [], error: 'Error' };
     }
   };
+  
+  export const getWorkspaceDetails = async (workspaceId: string) => {
+    const isValid = validate(workspaceId);
+    if (!isValid)
+      return {
+        data: [],
+        error: 'Error',
+      };
+  
+    try {
+      const response = (await db
+        .select()
+        .from(workspaces)
+        .where(eq(workspaces.id, workspaceId))
+        .limit(1)) as workspace[];
+      return { data: response, error: null };
+    } catch (error) {
+      console.log(error);
+      return { data: [], error: 'Error' };
+    }
+  };
+  
+  export const getFileDetails = async (fileId: string) => {
+    const isValid = validate(fileId);
+    if (!isValid) {
+      data: [];
+      error: 'Error';
+    }
+    try {
+      const response = (await db
+        .select()
+        .from(files)
+        .where(eq(files.id, fileId))
+        .limit(1)) as File[];
+      return { data: response, error: null };
+    } catch (error) {
+      console.log('🔴Error', error);
+      return { data: [], error: 'Error' };
+    }
+  };
+  
+  export const deleteFile = async (fileId: string) => {
+    if (!fileId) return;
+    await db.delete(files).where(eq(files.id, fileId));
+  };
+  
+  export const deleteFolder = async (folderId: string) => {
+    if (!folderId) return;
+    await db.delete(files).where(eq(files.id, folderId));
+  };
+  
+
+  export const getActiveProductsWithPrice = async () => {
+    try {
+      const res = await db.query.products.findMany({
+        where: (pro, { eq }) => eq(pro.active, true),
+  
+        with: {
+          price: {
+            //@ts-ignore
+            where: (pri, { eq }) => eq(pri.active, true),
+          },
+        },
+      });
+      if (res.length) return { data: res, error: null };
+      return { data: [], error: null };
+    } catch (error) {
+      console.log(error);
+      return { data: [], error };
+    }
+  };

@@ -36,6 +36,13 @@
       "when": 1715028375428,
       "tag": "0004_swift_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1715243487966,
+      "tag": "0005_slim_agent_brand",
+      "breakpoints": true
     }
   ]
 }

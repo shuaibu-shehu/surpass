@@ -52,16 +52,16 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Alert, AlertDescription } from '../ui/alert';
-// import CypressProfileIcon from '../icons/cypressProfileIcon';
-// import LogoutButton from '../global/logout-button';
+import SurpassProfileIcon from '../icons/surpassProfileIcon';
+import LogoutButton from '../global/logout-button';
 import Link from 'next/link';
-// import { useSubscriptionModal } from '@/lib/providers/subscription-modal-provider';
-// import { postData } from '@/lib/utils';
+import { useSubscriptionModal } from '@/lib/providers/subscription-modal-provider';
+import { postData } from '@/lib/utils';
 
 const SettingsForm = () => {
   const { toast } = useToast();
   const { user, subscription } = useSupabaseUser();
-//   const { open, setOpen } = useSubscriptionModal();
+  const { open, setOpen } = useSubscriptionModal();
   const router = useRouter();
   const supabase = createClientComponentClient();
   const { state, workspaceId, dispatch } = useAppState();
@@ -76,24 +76,24 @@ const SettingsForm = () => {
 
   //WIP PAYMENT PORTAL
 
-//   const redirectToCustomerPortal = async () => {
-//     setLoadingPortal(true);
-//     try {
-//       const { url, error } = await postData({
-//         url: '/api/create-portal-link',
-//       });
-//       window.location.assign(url);
-//     } catch (error) {
-//       console.log(error);
-//       setLoadingPortal(false);
-//     }
-//     setLoadingPortal(false);
-//   };
+  const redirectToCustomerPortal = async () => {
+    setLoadingPortal(true);
+    try {
+      const { url, error } = await postData({
+        url: '/api/create-portal-link',
+      });
+      window.location.assign(url);
+    } catch (error) {
+      console.log(error);
+      setLoadingPortal(false);
+    }
+    setLoadingPortal(false);
+  };
   //addcollborators
   const addCollaborator = async (profile: User) => {
     if (!workspaceId) return;
     if (subscription?.status !== 'active' && collaborators.length >= 2) {
-    //   setOpen(true);
+      setOpen(true);
       return;
     }
     await addCollaborators([profile], workspaceId);
@@ -388,7 +388,7 @@ const SettingsForm = () => {
           <Avatar>
             <AvatarImage src={''} />
             <AvatarFallback>
-              {/* <CypressProfileIcon /> */}
+              <SurpassProfileIcon />
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col ml-6">
@@ -411,11 +411,11 @@ const SettingsForm = () => {
             />
           </div>
         </div>
-        {/* <LogoutButton>
+        <LogoutButton>
           <div className="flex items-center">
             <LogOut />
           </div>
-        </LogoutButton> */}
+        </LogoutButton>
         <p className="flex items-center gap-2 mt-6">
           <CreditCard size={20} /> Billing & Plan
         </p>
@@ -439,7 +439,7 @@ const SettingsForm = () => {
               variant={'secondary'}
               disabled={loadingPortal}
               className="text-sm"
-            //   onClick={redirectToCustomerPortal}
+              onClick={redirectToCustomerPortal}
             >
               Manage Subscription
             </Button>
@@ -451,7 +451,7 @@ const SettingsForm = () => {
               size="sm"
               variant={'secondary'}
               className="text-sm"
-            //   onClick={() => setOpen(true)}
+              onClick={() => setOpen(true)}
             >
               Start Plan
             </Button>
