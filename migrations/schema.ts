@@ -1,5 +1,5 @@
 import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, jsonb, boolean, bigint, integer } from "drizzle-orm/pg-core"
-  import { sql } from "drizzle-orm"
+  import { relations, sql } from "drizzle-orm"
 
 export const keyStatus = pgEnum("key_status", ['expired', 'invalid', 'valid', 'default'])
 export const keyType = pgEnum("key_type", ['stream_xchacha20', 'secretstream', 'secretbox', 'kdf', 'generichash', 'shorthash', 'auth', 'hmacsha256', 'hmacsha512', 'aead-det', 'aead-ietf'])
@@ -122,3 +122,14 @@ export const collaborators = pgTable("collaborators", {
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
 });
+
+export const productsRelations = relations(products, ({ many }) => ({
+	prices: many(prices),
+  }));
+  
+export const pricesRelations = relations(prices, ({ one }) => ({
+	product: one(products, {
+	  fields: [prices.productId],
+	  references: [products.id],
+	}),
+  }));

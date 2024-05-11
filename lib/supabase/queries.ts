@@ -354,8 +354,7 @@ export const getUserSubscriptionStatus = async (userId: string) => {
         where: (pro, { eq }) => eq(pro.active, true),
   
         with: {
-          price: {
-            //@ts-ignore
+          prices: {
             where: (pri, { eq }) => eq(pri.active, true),
           },
         },
