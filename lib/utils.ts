@@ -45,11 +45,15 @@ export const toDateTime = (secs: number) => {
 };
 
 export const getURL = () => {
+  
   let url =
-    process?.env?.NEXT_PUBLIC_SITE_URL ??
-    'http://localhost:3000/';
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? 
+     process?.env?.NEXT_PUBLIC_RAILWAY_URL?? 
+    'https://localhost:3000';
 
   url = url.includes('http') ? url : `https://${url}`;
   url = url.charAt(url.length - 1) === '/' ? url : `${url}/`;
+  console.log('the site url', url);
+   
   return url;
 };

@@ -42,7 +42,7 @@ const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
       sm:flex 
       justify-between 
       items-center 
-      px-4 
+      px-3 
       py-2 
       dark:bg-Neutrals/neutrals-12
       rounded-3xl

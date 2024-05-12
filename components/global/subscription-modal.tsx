@@ -95,7 +95,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
                   ))}
                 </div>
               ))
-            : ''}
+            : 'No Products Available'}
           {/* No Products Available */}
         </DialogContent>
       )}

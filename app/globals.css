@@ -137,3 +137,12 @@ body {
   ul {
     @apply dark:text-washed-purple-700;
   }
+
+  .scroll-style::-webkit-scrollbar{
+    width: 7px;
+  }
+  
+  .scroll-style::-webkit-scrollbar-thumb{
+    background-color: #282637;
+    border-radius: 10px;
+  }

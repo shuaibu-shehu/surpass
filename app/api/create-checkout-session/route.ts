@@ -27,13 +27,13 @@ export async function POST(request: Request) {
         {
           price: price.id,
           quantity,
-        },
+        }, 
       ],
       mode: 'subscription',
       allow_promotion_codes: true,
       subscription_data: { trial_from_plan: true, metadata },
-      success_url: `${getURL()}/dashboard`,
-      cancel_url: `${getURL()}/dashboard`,
+      success_url: `${getURL()}dashboard`,
+      cancel_url: `${getURL()}dashboard`,
     });
     return NextResponse.json({ sessionId: session.id });
   } catch (error: any) {

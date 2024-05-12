@@ -1,6 +1,7 @@
 import React from 'react';
 import CustomDialogTrigger from '../global/custom-dialog-trigger';
 import SettingsForm from './settings-form';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface SettingsProps {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ const Settings: React.FC<SettingsProps> = ({ children }) => {
     <CustomDialogTrigger
       header="Settings"
       content={<SettingsForm/>}
-    >
+      >
       {children}
     </CustomDialogTrigger>
   );

@@ -132,4 +132,4 @@ export const pricesRelations = relations(prices, ({ one }) => ({
 	  fields: [prices.productId],
 	  references: [products.id],
 	}),
-  }));
+  })); 

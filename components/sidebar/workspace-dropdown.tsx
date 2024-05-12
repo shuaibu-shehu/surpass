@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import SelectedWorkspace from './selected-workspace';
 import CustomDialogTrigger from '../global/custom-dialog-trigger';
 import WorkspaceCreator from '../global/workspace-creator';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface WorkspaceDropdownProps {
   privateWorkspaces: workspace[] | [];
@@ -78,7 +79,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
           backdrop-blur-lg
           group
           overflow-scroll
-          truncate
+         
           border-[1px]
           border-muted
       "

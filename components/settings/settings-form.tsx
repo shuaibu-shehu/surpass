@@ -228,7 +228,7 @@ const SettingsForm = () => {
           </small>
         )}
       </div>
-      <>
+      <div>
         <Label htmlFor="permissions">Permissions</Label>
         <Select
           onValueChange={onPermissionsChange}
@@ -293,6 +293,7 @@ const SettingsForm = () => {
               </span>
               <ScrollArea
                 className="
+                scroll-style
             h-[120px]
             overflow-y-scroll
             w-full
@@ -457,7 +458,7 @@ const SettingsForm = () => {
             </Button>
           </div>
         )}
-      </>
+      </div>
       <AlertDialog open={openAlertMessage}>
         <AlertDialogContent>
           <AlertDialogHeader>
