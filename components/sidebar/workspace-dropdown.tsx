@@ -79,7 +79,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
           backdrop-blur-lg
           group
           overflow-scroll
-         
+         scroll-style
           border-[1px]
           border-muted
       "

@@ -1,5 +1,10 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormSchema } from '@/lib/types';
 import {
   Form,
   FormControl,
@@ -8,24 +13,20 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import clsx from 'clsx';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
+import Image from 'next/image';
 import Logo from '../../../public/surpass-logo.svg';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import Loader from '@/components/global/Loader';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { MailCheck } from 'lucide-react';
-import { FormSchema } from '@/lib/types';
-import { actionSignUpUser } from '@/lib/server-actions/auth-actions';
+import { Separator } from '@/components/ui/separator';
+import { actionLoginUser, actionSignUpUser } from '@/lib/server-actions/auth-actions';
 
-const SignUpFormSchema = z
+const LoginPage = () => {
+  const router = useRouter();
+  const [submitError, setSubmitError] = useState('');
+
+  const SignUpFormSchema = z
   .object({
     email: z.string().describe('Email').email({ message: 'Invalid Email' }),
     password: z
@@ -42,42 +43,25 @@ const SignUpFormSchema = z
     path: ['confirmPassword'],
   });
 
-const Signup = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [submitError, setSubmitError] = useState('');
-  const [confirmation, setConfirmation] = useState(false);
-
-  const codeExchangeError = useMemo(() => {
-    if (!searchParams) return '';
-    return searchParams.get('error_description');
-  }, [searchParams]);
-
-  const confirmationAndErrorStyles = useMemo(
-    () =>
-      clsx('bg-primary', {
-        'bg-red-500/10': codeExchangeError,
-        'border-red-500/50': codeExchangeError,
-        'text-red-700': codeExchangeError,
-      }),
-    [codeExchangeError]
-  );
-
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
     mode: 'onChange',
-    resolver: zodResolver(SignUpFormSchema),
-    defaultValues: { email: '', password: '', confirmPassword: '' },
+    resolver: zodResolver(FormSchema),
+    defaultValues: { email: '', password: '', confirmPassword: ''},
   });
 
   const isLoading = form.formState.isSubmitting;
-  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
-    const { error } = await actionSignUpUser({ email, password });
+
+  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
+   {email, password}
+  ) => {
+    const { error } = await actionSignUpUser({email, password});
+    
     if (error) {
-      setSubmitError(error.message);
       form.reset();
-      return;
+      setSubmitError(error.message);
     }
-    setConfirmation(true);
+    form.reset();
+    // router.replace('/dashboard');
   };
 
   return (
@@ -87,10 +71,7 @@ const Signup = () => {
           if (submitError) setSubmitError('');
         }}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full sm:justify-center sm:w-[400px]
-        space-y-6 flex
-        flex-col
-        "
+        className="w-full sm:justify-center sm:w-[400px] space-y-6 flex flex-col"
       >
         <Link
           href="/"
@@ -102,7 +83,7 @@ const Signup = () => {
         >
           <Image
             src={Logo}
-            alt="surface Logo"
+            alt="cypress Logo"
             width={50}
             height={50}
           />
@@ -119,43 +100,41 @@ const Signup = () => {
         >
           An all-In-One Collaboration and Productivity Platform
         </FormDescription>
-        {!confirmation && !codeExchangeError && (
-          <>
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+        <FormField
+          disabled={isLoading}
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          disabled={isLoading}
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
               disabled={isLoading}
               control={form.control}
               name="confirmPassword"
@@ -172,42 +151,27 @@ const Signup = () => {
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className="w-full p-6"
-              disabled={isLoading}
-            >
-              {!isLoading ? 'Create Account' : <Loader />}
-            </Button>
-          </>
-        )}
-
         {submitError && <FormMessage>{submitError}</FormMessage>}
+        <Button
+          type="submit"
+          className="w-full p-4 hover:bg-primary-blue-600"
+          size="lg"
+          disabled={isLoading}
+        >
+          {!isLoading ? 'Create an account' : <Loader />}
+        </Button>
         <span className="self-container">
           Already have an account?{' '}
           <Link
             href="/login"
             className="text-primary"
           >
-            Login
+            login
           </Link>
         </span>
-        {(confirmation || codeExchangeError) && (
-          <>
-            <Alert className={confirmationAndErrorStyles}>
-              {!codeExchangeError && <MailCheck className="h-4 w-4" />}
-              <AlertTitle>
-                {codeExchangeError ? 'Invalid Link' : 'Check your email.'}
-              </AlertTitle>
-              <AlertDescription>
-                {codeExchangeError || 'An email confirmation has been sent.'}
-              </AlertDescription>
-            </Alert>
-          </>
-        )}
       </form>
     </Form>
   );
 };
 
-export default Signup;
+export default LoginPage;
