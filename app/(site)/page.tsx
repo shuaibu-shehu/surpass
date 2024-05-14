@@ -12,8 +12,8 @@ import { twMerge } from "tailwind-merge";
 import { USERS } from "@/lib/constants";
 import clsx from "clsx";
 import { randomUUID } from 'crypto';
-import Diamond from "../../public/icons/diamond.svg";
-import CheckIcon from "../../public/icons/check.svg";
+import Diamond from "@/public/icons/diamond.svg";
+import CheckIcon from "@/public/icons/Check.svg";
 import CustomCard from "@/components/landing-page/custom-card";
 
 
@@ -368,7 +368,7 @@ function Home() {
                     "
                     >
                       <Image
-                        src={CheckIcon}
+                        src={ CheckIcon}
                         alt="Check Icon"
                       />
                       {feature}
