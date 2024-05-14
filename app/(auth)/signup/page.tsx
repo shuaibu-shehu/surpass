@@ -99,7 +99,7 @@ const LoginPage = () => {
         text-foreground/60"
         >
           An all-In-One Collaboration and Productivity Platform
-        </FormDescription>
+        </FormDescription> 
         <FormField
           disabled={isLoading}
           control={form.control}
