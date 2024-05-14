@@ -97,7 +97,7 @@ const LoginPage = () => {
         <FormDescription
           className="
         text-foreground/60"
-        >
+        > 
           An all-In-One Collaboration and Productivity Platform
         </FormDescription> 
         <FormField
