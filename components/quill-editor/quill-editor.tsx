@@ -82,7 +82,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [deletingBanner, setDeletingBanner] = useState(false);
   const [saving, setSaving] = useState(false);
   const [localCursors, setLocalCursors] = useState<any>([]);
-console.log('colaborators ',collaborators);
 
   const details = useMemo(() => {
     let selectedDir;

@@ -52,7 +52,7 @@ const CollaboratorSearch: React.FC<CollaboratorSearchProps> = ({
   const addCollaborator = (user: User) => {
     getCollaborator(user);
   };
-
+  
   return (
     <Sheet>
       <SheetTrigger className="w-full">{children}</SheetTrigger>

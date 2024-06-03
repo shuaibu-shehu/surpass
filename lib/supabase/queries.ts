@@ -366,3 +366,25 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       return { data: [], error };
     }
   };
+
+export const getUserDetails= async (userId: string) => {
+    try {
+      const response = await db.query.users.findFirst({
+        where: (u, { eq }) => eq(u.id, userId),
+      });
+      return { data: response, error: null };
+    } catch (error) {
+      console.log(error);
+      return { data: null, error: 'Error' };
+    }
+}
+
+  export const updateUser = async (user: Partial<User>, userId: string) => {
+    try {
+      await db.update(users).set(user).where(eq(users.id, userId));
+      return { data: null, error: null };
+    } catch (error) {
+      console.log(error);
+      return { data: null, error: 'Error' };
+    }
+  }

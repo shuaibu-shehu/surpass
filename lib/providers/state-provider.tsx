@@ -8,9 +8,11 @@ import React, {
   useMemo,
   useReducer,
 } from 'react';
-import { File, Folder, workspace } from '../supabase/supabase.types';
+import { File, Folder, workspace, User } from '../supabase/supabase.types';
 import { usePathname } from 'next/navigation';
 import { getFiles } from '../supabase/queries';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { useSupabaseUser } from './supabase-user-provider';
 
 export type appFoldersType = Folder & { files: File[] | [] };
 export type appWorkspacesType = workspace & {
@@ -19,6 +21,7 @@ export type appWorkspacesType = workspace & {
 
 interface AppState {
   workspaces: appWorkspacesType[] | [];
+  user?: User;
 }
 
 type Action =
@@ -72,9 +75,18 @@ type Action =
         workspaceId: string;
         fileId: string;
       };
+    }
+    |{
+      type: 'SET_USER';
+      payload: User;
+    }
+    |{
+      type: 'UPDATE_USER';
+      payload: Partial<User>;
+    
     };
 
-const initialState: AppState = { workspaces: [] };
+const initialState: AppState = { workspaces: [],user: undefined};
 
 const appReducer = (
   state: AppState = initialState,
@@ -273,6 +285,19 @@ const appReducer = (
           return workspace;
         }),
       };
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.payload,
+      };
+   case 'UPDATE_USER':
+      return {
+        ...state,
+        user: {
+          ...state.user!,
+          ...action.payload,
+        },
+      };
     default:
       return initialState;
   }
@@ -321,6 +346,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
       }
   }, [pathname]);
 
+  
   useEffect(() => {
     if (!folderId || !workspaceId) return;
     const fetchFiles = async () => {
@@ -336,6 +362,20 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     };
     fetchFiles();
   }, [folderId, workspaceId]);
+
+   
+  // useEffect(() => {
+    
+  //   const getUser = async () => {
+  //     return await getUserDetails(user.id)
+  //   }
+  //     dispatch({
+  //       type: 'SET_USER',
+  //       payload: getUser()
+  //     })
+  //     console.log('user set');
+      
+  // },[])
 
   useEffect(() => {
     console.log('App State Changed', state);

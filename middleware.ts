@@ -24,6 +24,7 @@ export async function middleware(req: NextRequest) {
         `/signup?error_description=${req.nextUrl.searchParams.get(
           'error_description'
         )}`,
+        
         req.url
       )
     );

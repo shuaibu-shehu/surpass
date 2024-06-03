@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import { useAppState } from '@/lib/providers/state-provider';
 import { User, workspace } from '@/lib/supabase/supabase.types';
@@ -23,7 +23,9 @@ import {
   addCollaborators,
   deleteWorkspace,
   getCollaborators,
+  getUserDetails,
   removeCollaborators,
+  updateUser,
   updateWorkspace,
 } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
@@ -73,6 +75,7 @@ const SettingsForm = () => {
   const [uploadingProfilePic, setUploadingProfilePic] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [loadingPortal, setLoadingPortal] = useState(false);
+  const [userData, setUserData] = useState<User>();
 
   //WIP PAYMENT PORTAL
 
@@ -150,6 +153,84 @@ const SettingsForm = () => {
       setUploadingLogo(false);
     }
   };
+
+  // useEffect( ()=>{
+  //    let userData;
+  //   if(!user)return;
+  //  const getUser=async ()=>{
+  //     const {data, error} = await getUserDetails(user.id)
+  //     if(error){
+  //       console.log('error',error);
+        
+  //     }
+  //     if(data){
+  //       userData=data;
+  //       dispatch({type:'SET_USER',payload: data})
+  //       console.log(data);
+  //     }
+  //     console.log('userData',state);
+      
+  //   };
+  //   getUser()
+  // },[])
+
+
+// const avatarPath=useMemo(()=>{
+//   if(!userData)return[];
+//   if(!userData.avatarUrl){
+//     return[];
+//   }
+//   return userData.avatarUrl;
+// },[userData])  
+
+  const onChangeProfilePicture=async(e:React.ChangeEvent<HTMLInputElement>)=>{
+    if(!user)return;
+    const file=e.target.files?.[0];
+    if(!file)return;
+    
+    let uuid=userData?.avatarUrl?.split('.')[1] || v4();
+    
+    console.log(uuid);
+    setUploadingProfilePic(true);
+    const {data,error}=await supabase.storage
+    .from('avatars')
+    .upload(`avatar.${uuid}`,file,{
+      cacheControl:'3600',
+      upsert:true,
+    });
+    console.log(data);
+    
+    if(!error){
+       await updateUser({avatarUrl:data.path},user.id);
+      setUploadingProfilePic(false);
+
+    }
+    
+    
+  }
+ 
+  const avatarUrl = supabase.storage.from('avatars').getPublicUrl(userData?.avatarUrl!)?.data.publicUrl;
+  
+  
+console.log(avatarUrl);
+
+  
+
+  useEffect( () => {
+    const getData = async () => {
+      if (!user) return;
+      const data = await getUserDetails(user.id);
+      if (data.error) {
+        console.log('error', data.error);
+      }
+      if (data.data) {
+        setUserData(data.data);
+        console.log(userData?.avatarUrl);
+        
+      }
+    };
+     getData();
+  }, [userData]);
 
   const onClickAlertConfirm = async () => {
     if (!workspaceId) return;
@@ -387,7 +468,7 @@ const SettingsForm = () => {
         <Separator />
         <div className="flex items-center">
           <Avatar>
-            <AvatarImage src={''} />
+            <AvatarImage src={avatarUrl} />
             <AvatarFallback>
               <SurpassProfileIcon />
             </AvatarFallback>
@@ -407,7 +488,7 @@ const SettingsForm = () => {
               type="file"
               accept="image/*"
               placeholder="Profile Picture"
-              // onChange={onChangeProfilePicture}
+              onChange={onChangeProfilePicture}
               disabled={uploadingProfilePic}
             />
           </div>
@@ -431,7 +512,7 @@ const SettingsForm = () => {
           className="text-muted-foreground flex flex-row items-center gap-2"
         >
           View Plans <ExternalLink size={16} />
-        </Link>
+        </Link>~
         {subscription?.status === 'active' ? (
           <div>
             <Button
